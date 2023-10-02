@@ -121,9 +121,10 @@ COPY --chown=bot:bot . .
 
 RUN ls -la
 
+# resorted to this earlier when nx command was segfaulting
 # RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm astro build --root apps/astro-ssr --verbose
 
-# this will segfault...
+# this will segfault... (UPDATE) magically now suddenly it won't !?!?!
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm nx build astro-ssr --prod
 
 # #######################################################################################################################

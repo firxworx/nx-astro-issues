@@ -67,30 +67,13 @@ The cjs + esm dual support is necessary for shared libraries that are used by bo
 
 Refer to the `Dockerfile` in `apps/astro-ssr` for the Docker image build.
 
-Inline comments show the commands used to build on x86 and ARM. For example for x86:
+Inline comments at the top show the commands used to build on x86 and ARM.
 
-```bash
-# for x86 workstations
-DOCKER_BUILDKIT=1 docker buildx build -f apps/astro-ssr/Dockerfile -t astro-ssr-demo:latest --platform=linux/amd64 .
+Previously there was an issue with the `nx` cli segfaulting when attempting to build `astro-ssr` inside the Docker image. It could not be resolved even with a completely fresh Docker image build. Now as I create this example repo the issue is no longer appearing... It may have just been with node-alpine (I since switched to node-slim) or may have just been a fluke!? I'll remove that issue however it would be interesting to know if you experience it as well. At the time my workaround was to build using the astro cli directly.
 
-# run the image
-docker run -it --rm -p 4321:4321 astro-ssr-demo:latest
+The segfault was unexpected because the `build` target in `project.json` of `apps/astro-ssr` is only using the `nx:run-commands` executor to run `astro build --root apps/astro-ssr`.
 
-# stop the image
-docker stop $(docker ps | grep ':4321' | awk '{print $1}')
-```
-
-### 1. SegFault with Nx Build in Dockerfile
-
-When building the Docker image using the `nx` cli via `pnpm nx` there is a segfault.
-
-This is unexpected as the `build` target in `project.json` of `apps/astro-ssr` is only using the `nx:run-commands` executor to run the command `astro build --root apps/astro-ssr`.
-
-There is no issue executing `pnpm build astro-ssr` when executed outside of a Docker image on the dev workstation.
-
-There is also no issue building using the Astro CLI directly via `pnpm astro build --root apps/astro-ssr`.
-
-### 2. "No cached ProjectGraph is available" running Astro build in Dockerfile
+### 1. "No cached ProjectGraph is available" running Astro build in Dockerfile
 
 When running Astro CLI build in Dockerfile the warning/error is shown (although the image continues to build):
 
