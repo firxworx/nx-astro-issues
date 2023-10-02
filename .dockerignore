@@ -1,0 +1,10 @@
+# reminders
+# - explicitly add an nx-cloud.env in Dockerfile or set env if using nx cloud (nx-cloud.env in this dockerignore)
+
+.DS_Store
+node_modules
+dist
+
+aws*.sh
+
+nx-cloud.env

@@ -1,0 +1,77 @@
+---
+import { getNameInitials } from '@rfx/common-toolbox'
+import { CustomButton } from '../components/CustomButton'
+import AppLayout from '../layouts/AppLayout.astro'
+import Card from '../components/Card.astro'
+import { Box } from '../components/Box'
+
+// this index showcases an intermixing of Astro and React components in a custom layout to flex Nx
+// the React components are defined both within this Nx project and also imported from a library in the same Nx workspace
+//
+// everything is styled with tailwindcss
+//
+// the tailwind styles are purged correctly because a custom path is defined in tailwind.config.cjs
+// otherwise createGlobPatternsForDependencies() is currently non-functional because Nx graph can't resolve
+// Astro dependencies
+
+// note: Astro+react doesn't support defining functions inline components with client:* hydration attributes
+// e.g. <Button client:load onClick={() => alert(('yo'))}>Yoyo</Button>
+// hence the creation of <CustomButton>
+---
+
+<AppLayout title="Welcome to Astro Page.">
+  <div class="container mx-auto py-6">
+    <h1 class="text-3xl font-bold">
+      Welcome to <span class="font-extrabold">Astro 3.0</span> in an <span class="font-extrabold">Nx Workspace</span>
+    </h1>
+    <Box className="my-8">
+      <h3 class="mb-4 text-2xl font-semibold">Test Nx Library Function</h3>
+      <p class="text-lg">
+        The following are the initials of "Hello World" as returned by <code>getNameInitials()</code>, a function
+        imported from a library in this Nx workspace: <span class="font-semibold">{getNameInitials('Hello World')}</span
+        >
+      </p>
+    </Box>
+    <Box client:load className="my-8">
+      <h3 class="mb-4 text-2xl font-semibold">Test Nx Library React Component with <code>client:load</code></h3>
+      <p class="my-4 text-lg">
+        The following buttons are imported into the Astro app from a React component library in this workspace.
+      </p>
+      <p class="my-4 text-lg">
+        This button uses Astro's <code>client:load</code> to load client-side JavaScript (hydration).
+      </p>
+      <CustomButton client:load />
+      <p class="my-4 text-lg">
+        And this button uses Astro's <code>client:only="react"</code> to skip all hydration and exclusively render on
+        the client.
+      </p>
+      <CustomButton client:only="react">Click Me</CustomButton>
+    </Box>
+    <Box className="my-8">
+      <a href="/theme" class="text-sky-800 no-underline hover:underline">Go to another page</a>
+    </Box>
+    <h2 class="my-6 font-bold text-3xl">Boilerplate Astro Components</h2>
+    <ul role="list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <Card
+        href="https://docs.astro.build/"
+        title="Documentation"
+        body="Learn how Astro works and explore the official API docs."
+      />
+      <Card
+        href="https://astro.build/integrations/"
+        title="Integrations"
+        body="Supercharge your project with new frameworks and libraries."
+      />
+      <Card
+        href="https://astro.build/themes/"
+        title="Themes"
+        body="Explore a galaxy of community-built starter themes."
+      />
+      <Card
+        href="https://astro.build/chat/"
+        title="Community"
+        body="Come say hi to our amazing Discord community. ❤️"
+      />
+    </ul>
+  </div>
+</AppLayout>

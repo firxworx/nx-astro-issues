@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "version": 2,
+  "title": "Build executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "astroConfigPath": {
+      "type": "string",
+      "description": "Specify the path, relative to the project root, to the Astro config file."
+    },
+    "outputPath": {
+      "type": "string",
+      "description": "Specify the path, relative to the project root, to the dist (output) directory."
+    },
+    "deleteOutputPath": {
+      "type": "boolean",
+      "description": "Delete the output path before building.",
+      "default": true
+    },
+    "verbose": {
+      "type": "boolean",
+      "description": "Enable verbose logging.",
+      "default": false
+    }
+  },
+  "required": ["astroConfigPath", "outputPath"]
+}

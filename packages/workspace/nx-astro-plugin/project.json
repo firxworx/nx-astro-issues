@@ -1,0 +1,70 @@
+{
+  "name": "nx-astro-plugin",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/workspace/nx-astro-plugin/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/workspace/nx-astro-plugin",
+        "main": "packages/workspace/nx-astro-plugin/src/index.ts",
+        "tsConfig": "packages/workspace/nx-astro-plugin/tsconfig.lib.json",
+        "assets": [
+          "packages/workspace/nx-astro-plugin/*.md",
+          {
+            "input": "./packages/workspace/nx-astro-plugin/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./packages/workspace/nx-astro-plugin/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./packages/workspace/nx-astro-plugin",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./packages/workspace/nx-astro-plugin",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs nx-astro {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "packages/workspace/nx-astro-plugin/**/*.ts",
+          "packages/workspace/nx-astro-plugin/package.json",
+          "packages/workspace/nx-astro-plugin/executors.json"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/workspace/nx-astro-plugin/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": ["nx", "plugin"]
+}

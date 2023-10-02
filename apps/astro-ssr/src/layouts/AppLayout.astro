@@ -1,0 +1,13 @@
+---
+import Layout from './Layout.astro'
+
+export interface Props {
+  title: string
+}
+---
+
+<Layout title="Full Layout">
+  <div class="grid grid-cols-1 grid-rows-1 min-h-screen bg-slate-50 overscroll-contain">
+    <slot />
+  </div>
+</Layout>

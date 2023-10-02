@@ -1,0 +1,9 @@
+node_modules
+.astro
+cache
+generated
+dist
+*.spec.ts
+*.spec.tsx
+*.test.ts
+*.test.tsx

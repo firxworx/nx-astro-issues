@@ -1,0 +1,73 @@
+{
+  "name": "astro-ssr",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/astro-ssr/src",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "options": {
+        "commands": [
+          {
+            "command": "astro build --root apps/astro-ssr",
+            "forwardAllArgs": true
+          }
+        ],
+        "parallel": false,
+        "envFile": ".env"
+      }
+    },
+    "custom": {
+      "executor": "@rfx/nx-astro-plugin:build",
+      "options": {
+        "textToEcho": "Hello World",
+        "astroConfigPath": "apps/astro-ssr/astro.config.mjs",
+        "outputPath": "dist/apps/astro-ssr"
+      }
+    },
+    "docker:build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "DOCKER_BUILDKIT=1 docker buildx build -f apps/astro-ssr/Dockerfile -t astro-ssr:latest .",
+            "forwardAllArgs": true
+          }
+        ],
+        "parallel": false,
+        "envFile": ".env"
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "astro dev --root apps/astro-ssr",
+            "forwardAllArgs": true
+          }
+        ],
+        "parallel": false,
+        "envFile": ".env"
+      }
+    },
+    "preview": {
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "self"
+        }
+      ]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/op/astro-ssr/**/*.ts", "apps/op/astro-ssr/**/*.tsx"],
+        "ignorePath": "apps/op/astro-ssr/.eslintignore"
+      }
+    }
+  },
+  "tags": []
+}
